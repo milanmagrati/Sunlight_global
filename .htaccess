@@ -1,0 +1,13 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Block direct access to application files and folders --
+    # nobody browsing the site should ever be able to fetch these.
+    RewriteRule ^(\.env|\.env\.example|\.git|composer\.(json|lock)|artisan|package\.json|README\.md|DEPLOYMENT\.md)$ - [F,L]
+    RewriteRule ^(app|bootstrap|config|database|resources|routes|storage|tests|vendor)/ - [F,L]
+
+    # Everything else is served out of the public/ folder, where Laravel's
+    # own front controller (public/index.php) takes over.
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
